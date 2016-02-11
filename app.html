@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html ng-app="restaurante">
+<head>
+    <title>Restaurante Angel</title>
+    <script src="angular.min.js"></script>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap-theme.css" rel="stylesheet" />
+    <script>
+        angular.module("restaurante", []).controller("restauranteCtrl",function(){});
+    </script>
+    
+</head>
+<body ng-controller="restauranteCtrl">
+    <div class="navbar navbar-inverse">
+        <a class="navbar-brand" href="#">Restaurante Angel</a>
+		
+    </div>
+	
+    <div class="panel panel-default row" >
+        <div class="col-xs-3">
+           Panel izquierdo
+        </div>
+        <div class="col-xs-8">
+		<div>
+			<ul class="nav nav-pills nav-justified">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Ofertas</a></li>
+				<li><a href="#">Condiciones de uso</a></li>
+				<li><a href="#">Contacto</a></li>
+			</ul>
+	    </div>
+		<div>
+            <ng-include  src="'views/reservas_form.html'"></ng-include>
+		</div>
+        </div>
+</body>
+</html>
