@@ -1,0 +1,23 @@
+<div class="well" ng-hide="data.usuarioRegistrado">
+<form name="loginForm" novalidate ng-submit="authenticate(user.username,user.password)">
+	<div class="form-group">
+		<label>Usuario</label>
+		<input class="form-control" ng-model="user.username" />
+	</div>
+
+	<div class="form-group">
+		<label>Contrase&ntilde;a</label>
+		<input class="form-control" ng-model="user.password" type="password" />
+	</div>
+	<div class="text-center">
+		<button class="btn btn-primary" type="submit">Acceder</button>
+	</div>
+	<div class="text-center">
+		<a href="#nuevoUsuario" >Registro nuevo usuario</a>
+	</div>
+	<div class="text-center">
+		<a href="#claveOlvidada" >Contrase&ntilde;a olvidada</a>
+	</div>
+</form>
+<div>{{mensajeLog}}</div>
+</div>

@@ -1,0 +1,67 @@
+﻿<style>
+form.validate .ng-invalid-required.ng-dirty { background-color: lightpink; }
+form.validate .ng-invalid-email.ng-dirty {
+background-color: lightgoldenrodyellow; }
+div.error { color: red; font-weight: bold; }
+</style>
+
+<div class="well">
+<div class="panel panel-default row" >
+        <div class="col-xs-6">
+			<form name="registerForm" novalidate ng-submit="addUser(newUser)" ng-class="showValidation?'validate':''">
+			  <h3>Formulario de registro</h3>
+
+			<h4>Datos de contacto</h4>
+				<div class="form-group">
+					<label>Nombre</label>
+					<input class="form-control" ng-model="newUser.nombre" name="nombre" required />
+					<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.nombre.$error)}}
+                    </div>
+				</div>
+				<div class="form-group">
+					<label>Apellidos</label>
+						<input class="form-control" ng-model="newUser.apellidos" name="apellidos" required />
+						<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.apellidos.$error)}}
+                    </div>
+				</div>
+				<div class="form-group">
+					<label>Teléfono</label>
+					<input class="form-control" ng-model="newUser.telefono" name="telefono" required />
+					<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.telefono.$error)}}
+                    </div>
+				</div>
+
+			<h4>Datos de registro</h4>
+				<div class="form-group">
+					<label>Correo electronico</label>
+					<input class="form-control" ng-model="newUser.username" name="username" type="email" required/>
+					<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.username.$error)}}
+                    </div>
+				</div>
+		<div class="form-group">
+			<label>Contrase&ntilde;a</label>
+			<input class="form-control" ng-model="newUser.password" type="password" name="password" required/>
+			<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.password.$error)}}
+                    </div>
+		</div>
+		<div class="form-group">
+			<label>Repite Contrase&ntilde;a</label>
+			<input class="form-control" ng-model="newUser.c_password" type="password" name="c_password" required/>
+			<div class="error" ng-show="showValidation">
+                          {{getError(registerForm.c_password.$error)}}
+                    </div>
+		</div>
+		<div class="text-center">
+			<button  type="submit"
+			 class="btn btn-primary" ng-disabled="registerForm.$invalid">Enviar</button>
+		</div>
+		</form>
+		<div>{{message}} El formulario es valido:{{registerForm.$valid}}</div>
+	</div>
+</div>
+</div>

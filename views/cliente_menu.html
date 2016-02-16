@@ -1,0 +1,8 @@
+<div class="well" ng-show="data.usuarioRegistrado">
+<h3>Hola, {{data.usuarioActual.nombre}} {{data.usuarioActual.apellidos}}</h3>
+<div class="list-group">
+  <a href="#perfil" class="list-group-item">Redactar Perfil</a>
+  <a href="#reservasActivas" class="list-group-item">Reservas activas</a>
+  <a  class="list-group-item" ng-click="logOut()">Salir</a>
+</div>
+</div>

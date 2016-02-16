@@ -1,37 +1,65 @@
 ﻿<!DOCTYPE html>
 <html ng-app="restaurante">
 <head>
-    <title>Restaurante Angel</title>
+    <title>Restaurante Ángel</title>
+	<meta charset="UTF-8">
     <script src="angular.min.js"></script>
     <link href="bootstrap.css" rel="stylesheet" />
     <link href="bootstrap-theme.css" rel="stylesheet" />
     <script>
-        angular.module("restaurante", []).controller("restauranteCtrl",function(){});
+       angular.module("restaurante", ["ngRoute"])
+.config(function ($routeProvider) {
+$routeProvider.when("/home", {
+templateUrl: "/views/home.html"
+});
+$routeProvider.when("/uso", {
+templateUrl: "/views/uso.html"
+});
+$routeProvider.when("/informacion", {
+templateUrl: "/views/informacion.html"
+});
+$routeProvider.when("/contacto", {
+templateUrl: "/views/contacto.html"
+});
+$routeProvider.when("/nuevoUsuario", {
+templateUrl: "/views/registro_form.html"
+});
+
+$routeProvider.otherwise({
+templateUrl: "/views/home.html"
+});
+});
     </script>
-    
+	<script src="controllers/restaurante.js"></script>
+    <script src="ngmodules/angular-route.js"></script>
 </head>
 <body ng-controller="restauranteCtrl">
-    <div class="navbar navbar-inverse">
-        <a class="navbar-brand" href="#">Restaurante Angel</a>
+<div class="container">
+    <div >
+        <a class="navbar-brand" href="#"><img class="img-responsive" src="logo.jpg" width="80px" /></a>
+		<h2>Restaurante Angel</h2>
 		
     </div>
-	
-    <div class="panel panel-default row" >
-        <div class="col-xs-3">
-           Panel izquierdo
-        </div>
-        <div class="col-xs-8">
-		<div>
+	<div>
 			<ul class="nav nav-pills nav-justified">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Ofertas</a></li>
-				<li><a href="#">Condiciones de uso</a></li>
-				<li><a href="#">Contacto</a></li>
+				<li><a href="#home">Home</a></li>
+				<li><a href="#informacion">Información</a></li>
+				<li><a href="#uso">Condiciones de uso</a></li>
+				<li><a href="#contacto">Contacto</a></li>
 			</ul>
 	    </div>
-		<div>
-            <ng-include  src="'views/reservas_form.html'"></ng-include>
-		</div>
+    <div class="panel panel-default row" >
+        <div class="col-xs-3">
+          <ng-include  src="'views/busqueda_form.html'"></ng-include>
+		  <ng-include  src="'views/login_form.html'"></ng-include>
+		  <ng-include  src="'views/cliente_menu.html'"></ng-include>
         </div>
+        <div class="col-xs-9">
+		
+		<div>
+            <ng-view></ng-view>
+		</div>
+    </div>
+</div>		
 </body>
 </html>
