@@ -7,7 +7,11 @@ div.error { color: red; font-weight: bold; }
 
 <div class="well">
 <div class="panel panel-default row" >
-        <div class="col-xs-6">
+        <div class="alert alert-danger" ng-show="data.errorInsercion">
+		Se ha producido error en la inserción de los datos<br>
+		<button ng-click="">Intentalo otra vez</button>
+		</div>
+        <div class="col-xs-6" ng-hide="data.errorInsercion">
 			<form name="registerForm" novalidate ng-submit="addUser(newUser)" ng-class="showValidation?'validate':''">
 			  <h3>Formulario de registro</h3>
 
