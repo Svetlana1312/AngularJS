@@ -4,65 +4,70 @@ angular.module("restaurante")
 .constant("authUrl", "http://localhost:5500/usuario/login")
 .constant("userUrl", "http://localhost:5500/usuario/me")
 .constant("logOutUrl", "http://localhost:5500/usuario/logout")
-.controller("restauranteCtrl", function ($scope, $http, $location,usersUrl,productosUrl,authUrl,userUrl,logOutUrl) {
+.controller("restauranteCtrl", 
+    function ($scope,$window, $http, $location,usersUrl,productosUrl,authUrl,userUrl,logOutUrl) {
 // declaramaos la variable data
-$scope.data = {
-};
+$scope.data = {};
+// funcion para navegar de forma que nos interesa resetear a veces
 $scope.navigateTo = function (url){
-if($location.path() ===url) 
-       $route.reload();
-    else 
-	   $location.path(url);
-};
-$scope.data.usuarioRegistrado=true;
+	if($location.path() ===url) 
+				$route.reload();
+		else 
+				$location.path(url);
+}; // final navigateTo
+
+$scope.data.usuarioRegistrado=false;
 
 // añadir el nuevo usuario a la base de datos
 $scope.addUser = function (userDetails) {
 
-
-$http.post(usersUrl,userDetails)
+$http
+.post(usersUrl,userDetails)
 .success(function (data) {
-$scope.message = "El usuario se ha dado de alta con exito";
+		$scope.message = "El usuario se ha dado de alta con exito";
 })
 .error(function (error) {
-$scope.message = "Error en la insercion";
+		$scope.data.errorInsercion = error;
+		$window.location.reload();
 });
 
 
-};
-$scope.mensajeLog="Ready";
+};// final de addUser
+
 // autenticacion de usuario
 
+$scope.cargarUsuario = function(){
 $http.get(userUrl, {
 withCredentials: true
-}).success(function(data){
+})
+.success(function(data){
 $scope.data.usuarioActual = data;
+$scope.data.usuarioRegistrado=true;
 })
 .error(function(error){
 $scope.data.usuarioActual = "Error";
 });
-
-$scope.existsUser=function(userName){
-  
-};
-// comprueba que existe el usuario y con esta contraseña
-
+}; // final de cargarUsuario
 
 $scope.message = "Ready";
 
-// funcion de error del formulario de entrada datos de nuevo usuario
+// funcion de feedback de error del formulario de entrada datos de nuevo usuario
 $scope.getError = function (error) {
-if (angular.isDefined(error)) {
-if (error.required) {
-return "Please enter a value";
-} else if (error.email) {
-return "Please enter a valid email address";
-}
-}
+	if (angular.isDefined(error)) {
+		if (error.required) {
+				return "Please enter a value";
+		} else if (error.email) {
+		return "Please enter a valid email address";
+		}
+	}
 };
+
 })
 .controller("loginCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl){
+
+// funcion de cerrar sesion
 $scope.logOut=function(){
+
 $http.post(logOutUrl, {
 withCredentials: true
 })
@@ -71,7 +76,8 @@ withCredentials: true
 				   
                         });
 
-};
+}; // final de logOut
+
 //autenticacion de usuarios
 $scope.authenticate = function (user, pass) {
 $http.post(authUrl, {
@@ -89,5 +95,8 @@ $scope.data.usuarioRegistrado=true;
 $scope.authenticationError = error;
 $scope.mensajeLog  = "Error login";
 });
-};
+};// final de authenticate
+
+
+
 });
