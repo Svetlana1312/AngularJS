@@ -1,5 +1,5 @@
 <div ng-controller="loginCtrl">
-<div class="well" ng-hide="data.usuarioRegistrado">
+<div class="well" ng-show="data.noLogin">
 <form name="loginForm" novalidate ng-submit="authenticate(user.username,user.password)">
 	<div class="form-group">
 		<label>Usuario</label>

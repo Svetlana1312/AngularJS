@@ -1,8 +1,12 @@
-<div class="well" ng-show="data.usuarioRegistrado">
+<div ng-controller="userCtrl">
+<div class="well" ng-hide="data.noLogin">
 <h3>Hola, {{data.usuarioActual.nombre}} {{data.usuarioActual.apellidos}}</h3>
 <div class="list-group">
   <a href="#perfil" class="list-group-item">Redactar Perfil</a>
   <a href="#reservasActivas" class="list-group-item">Reservas activas</a>
-  <a  class="list-group-item" ng-click="logOut()">Salir</a>
+  <button  class="list-group-item" ng-click="logOut()">Salir</button>
+</div>
+<div >{{data.cargarUsuarioError}}</div>
+<div >{{data.logOutError}}</div>
 </div>
 </div>

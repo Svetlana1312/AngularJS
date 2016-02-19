@@ -16,7 +16,7 @@ $scope.navigateTo = function (url){
 				$location.path(url);
 }; // final navigateTo
 
-$scope.data.usuarioRegistrado=false;
+$scope.data.noLogin=true;
 
 // añadir el nuevo usuario a la base de datos
 $scope.addUser = function (userDetails) {
@@ -34,7 +34,7 @@ $http
 
 };// final de addUser
 
-// autenticacion de usuario
+// metodo para cargar los datos del usuario logeado
 
 $scope.cargarUsuario = function(){
 $http.get(userUrl, {
@@ -42,10 +42,10 @@ withCredentials: true
 })
 .success(function(data){
 $scope.data.usuarioActual = data;
-$scope.data.usuarioRegistrado=true;
+
 })
 .error(function(error){
-$scope.data.usuarioActual = "Error";
+$scope.data.cargarUsuarioError = "El usuario no se ha podido cargar de la base de datos";
 });
 }; // final de cargarUsuario
 
@@ -65,18 +65,7 @@ $scope.getError = function (error) {
 })
 .controller("loginCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl){
 
-// funcion de cerrar sesion
-$scope.logOut=function(){
 
-$http.post(logOutUrl, {
-withCredentials: true
-})
-.success(function(data){
-                   navigateTo();
-				   
-                        });
-
-}; // final de logOut
 
 //autenticacion de usuarios
 $scope.authenticate = function (user, pass) {
@@ -88,7 +77,9 @@ withCredentials: true
 })
 .success(function (data) {
 $scope.mensajeLog  = "Exito de login";
-$scope.data.usuarioRegistrado=true;
+$scope.data.noLogin=false;
+$scope.cargarUsuario();
+$scope.navigateTo("/home");
 
 })
 .error(function (error) {
@@ -98,5 +89,24 @@ $scope.mensajeLog  = "Error login";
 };// final de authenticate
 
 
+
+})
+.controller("userCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl,$window){
+
+// funcion de cerrar sesion
+$scope.logOut=function(){
+
+$http.post(logOutUrl, {
+withCredentials: true
+})
+.success(function(data){
+                   $window.location.reload();
+				   
+                        })
+.error(function(error){
+data.logOutError = "Error del logout";
+});
+
+}; // final de logOut
 
 });
