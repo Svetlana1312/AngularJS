@@ -1,0 +1,45 @@
+﻿<style>
+form.validate .ng-invalid-required.ng-dirty { background-color: lightpink; }
+form.validate .ng-invalid-email.ng-dirty {
+background-color: lightgoldenrodyellow; }
+div.error { color: red; font-weight: bold; }
+</style>
+
+<div class="well" ng-controller="recordarCtrl">
+<div class="panel panel-default row" >
+        <div class="alert alert-danger" ng-show="data.errorRecordar">
+		    <strong>Error:</strong> <br>
+		    {{mensaje}}<br>
+			<button ng-click="data.errorRecordar=false">Vuelve a intentarlo</button>
+			
+		</div>
+		<div class="alert alert-success" ng-show="data.exitoRecordar">
+		<strong>Felicidades</strong>  Pronto recibirás mensaje en tu correo electrónico con tu nueva contrase&ntilde;a. <br>
+		clave actual: {{data.clave}} <br> 
+		</div>
+        <div  ng-hide="data.errorRecordar || data.exitoRecordar">
+			<form name="recordarForm" novalidate ng-submit="recordarClave(rec.email)" ng-class="validate">
+			  <h3>Contrase&ntilde;a olvidada</h3>
+
+			<h6>Por favor, para que podamos ayudarte a recuperar el accesso en la página, necesitamos el correo electronico
+			con el que te registraste</h6>
+			<div class="col-xs-6">
+				<div class="form-group" >
+					<label>Correo electronico:</label>
+					<input class="form-control"  ng-model="rec.email" name="email" type="email" required />
+					<div class="error" >
+                          {{getError(recordarForm.email.$error)}}
+                    </div>
+				</div>
+				
+				
+		
+		        <div class="text-center">
+			         <button  type="submit"
+			              class="btn btn-primary" ng-disabled="recordarForm.$invalid">Recordar</button>
+		        </div>
+		    </div>
+		</form>
+	</div>
+</div>
+</div>

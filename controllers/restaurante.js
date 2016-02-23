@@ -18,21 +18,7 @@ $scope.navigateTo = function (url){
 
 $scope.data.noLogin=true;
 
-// añadir el nuevo usuario a la base de datos
-$scope.addUser = function (userDetails) {
 
-$http
-.post(usersUrl,userDetails)
-.success(function (data) {
-		$scope.message = "El usuario se ha dado de alta con exito";
-})
-.error(function (error) {
-		$scope.data.errorInsercion = error;
-		$window.location.reload();
-});
-
-
-};// final de addUser
 
 // metodo para cargar los datos del usuario logeado
 
@@ -49,7 +35,7 @@ $scope.data.cargarUsuarioError = "El usuario no se ha podido cargar de la base d
 });
 }; // final de cargarUsuario
 
-$scope.message = "Ready";
+
 
 // funcion de feedback de error del formulario de entrada datos de nuevo usuario
 $scope.getError = function (error) {
@@ -109,4 +95,56 @@ data.logOutError = "Error del logout";
 
 }; // final de logOut
 
+})
+.controller("registroCtrl", function($scope,$window,$http,usersUrl){
+// añadir el nuevo usuario a la base de datos
+$scope.addUser = function (userDetails) {
+//if(userDetails.password == userDetails.c_password){
+$http
+.post(usersUrl,userDetails)
+.success(function (data) {
+		$scope.message = "El usuario se ha dado de alta con exito";
+		$scope.data.exitoRegistro=true;
+})
+.error(function (error) {
+		$scope.data.errorRegistro = error;
+// $window.location.reload();
 });
+//}else 
+
+
+};// final de addUser
+
+})
+.controller("recordarCtrl",function($scope,$http,usersUrl){
+ $scope.recordarClave  = function(email){
+	 $http.get(usersUrl+"?username=" + email)
+    .success(function(data){
+	if(data[0]){
+		$scope.data.exitoRecordar = true;
+		$scope.data.clave = data[0].password;
+		$scope.data.nombre = data[0].nombre;
+		
+	}else{
+	$scope.data.errorRecordar = true;
+	$scope.mensaje  = "No existe un usuario registrado con este email!";
+	//$scope.data.email = email;
+	}
+	
+	})
+	.error(function(error){
+	$scope.data.errorRecordar = true;
+	$scope.mensaje  = "No ha sido posible enviar el email!";
+
+	});
+ };
+
+//$scope.enviarEmail();
+})
+directive('focusOn', function() {
+   return function(scope, elem, attr) {
+      scope.$on(attr.focusOn, function(e) {
+          elem[0].focus();
+      });
+   };
+});;
