@@ -77,7 +77,7 @@ $scope.mensajeLog  = "Error login";
 
 
 })
-.controller("userCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl,$window){
+.controller("userCtrl",function($scope, $http,logOutUrl,$window){
 
 // funcion de cerrar sesion
 $scope.logOut=function(){
@@ -90,7 +90,7 @@ withCredentials: true
 				   
                         })
 .error(function(error){
-data.logOutError = "Error del logout";
+$scope.data.logOutError = "Error del logout";
 });
 
 }; // final de logOut
