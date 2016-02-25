@@ -28,12 +28,16 @@ $routeProvider.when("/contacto", {
 templateUrl: "/views/contacto.html"
 });
 $routeProvider.when("/nuevoUsuario", {
-templateUrl: "/views/registro_form.html"
+templateUrl: "/views/registro_form.html",
+controller: "registroCtrl"
 });
 $routeProvider.when("/claveOlvidada", {
 templateUrl: "/views/recordar_clave.html"
 });
-
+$routeProvider.when("/perfil", {
+templateUrl: "/views/registro_form.html",
+controller: "correccionPerfilCtrl"
+});
 $routeProvider.otherwise({
 templateUrl: "/views/home.html"
 });
@@ -42,6 +46,7 @@ templateUrl: "/views/home.html"
 
 	<script src="controllers/restaurante.js"></script>
     <script src="ngmodules/angular-route.js"></script>
+	<style>div.error{ color: red; font-weight: bold; }</style>
 </head>
 <body ng-controller="restauranteCtrl">
 <div class="container">

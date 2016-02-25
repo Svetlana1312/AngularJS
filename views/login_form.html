@@ -1,9 +1,11 @@
 <div ng-controller="loginCtrl">
 <div class="well" ng-show="data.noLogin">
 <form name="loginForm" novalidate ng-submit="authenticate(user.username,user.password)">
+  <h4>Accesso usuarios registrados:</h4>
+  <div ng-show="data.authenticationError" class="error"> Datos incorrectos!</div>
 	<div class="form-group">
-		<label>Usuario</label>
-		<input class="form-control" ng-model="user.username" />
+		<label>Correo electronico:</label>
+		<input class="form-control" ng-model="user.username" id="userNameLogin"/>
 	</div>
 
 	<div class="form-group">
@@ -20,6 +22,6 @@
 		<a href="#claveOlvidada" >Contrase&ntilde;a olvidada</a>
 	</div>
 </form>
-<div>{{mensajeLog}}</div>
+
 </div>
 </div>

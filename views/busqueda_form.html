@@ -1,14 +1,14 @@
 
 <div class="well">
-
+<h4>Reservar mesa para comer</h4>
 <div class="form-group">
-<label>Fecha</label>
+<label>Fecha:</label>
 <input class="form-control" ng-model="data.reserva.fecha" type="date"/>
 </div>
 
 <div class="form-group">
-<label>Numero de comensales</label>
-<input class="form-control" ng-model="data.reserva.comensales" />
+<label>Comensales:</label>
+<input class="form-control" ng-model="data.reserva.comensales" type="number" min="1" max="10" title="entre 1 y 10 comensales" />
 </div>
 <div class="text-center">
 <button class="btn btn-primary">Buscar</button>

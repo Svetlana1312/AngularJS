@@ -41,14 +41,17 @@ $scope.data.cargarUsuarioError = "El usuario no se ha podido cargar de la base d
 $scope.getError = function (error) {
 	if (angular.isDefined(error)) {
 		if (error.required) {
-				return "Please enter a value";
+				return "Por favor, rellena este campo";
 		} else if (error.email) {
-		return "Please enter a valid email address";
+		return "Por favor, indica un correo electrónico válido";
+		}
+		else if (error.patern) {
+		return "Por favor, indica un telefono válido";
 		}
 	}
 };
 
-})
+})//final del controler principal
 .controller("loginCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl){
 
 
@@ -69,8 +72,9 @@ $scope.navigateTo("/home");
 
 })
 .error(function (error) {
-$scope.authenticationError = error;
-$scope.mensajeLog  = "Error login";
+$scope.data.authenticationError = error;
+$("#userNameLogin").focus().select();
+
 });
 };// final de authenticate
 
@@ -86,6 +90,7 @@ $http.post(logOutUrl, {
 withCredentials: true
 })
 .success(function(data){
+                   $scope.navigateTo("/home");
                    $window.location.reload();
 				   
                         })
@@ -96,21 +101,27 @@ $scope.data.logOutError = "Error del logout";
 }; // final de logOut
 
 })
-.controller("registroCtrl", function($scope,$window,$http,usersUrl){
+.controller("registroCtrl", function($scope,$http,usersUrl){
 // añadir el nuevo usuario a la base de datos
+// inicializar las variables
+		 /*    $scope.data.exitoCorreccionPerfil = false;
+		     $scope.data.exitoRegistro=false;
+			 $scope.data.errorRegistro = false;*/
+         				 
 $scope.addUser = function (userDetails) {
 //if(userDetails.password == userDetails.c_password){
 $http
 .post(usersUrl,userDetails)
 .success(function (data) {
-		$scope.message = "El usuario se ha dado de alta con exito";
+		
 		$scope.data.exitoRegistro=true;
+		    
 })
 .error(function (error) {
 		$scope.data.errorRegistro = error;
 // $window.location.reload();
 });
-//}else 
+
 
 
 };// final de addUser
@@ -141,10 +152,32 @@ $http
 
 //$scope.enviarEmail();
 })
-directive('focusOn', function() {
-   return function(scope, elem, attr) {
-      scope.$on(attr.focusOn, function(e) {
-          elem[0].focus();
-      });
-   };
-});;
+.controller("correccionPerfilCtrl", function($scope,$http,usersUrl){
+ $scope.newUser = $scope.data.usuarioActual;
+ $scope.newUser.password = "1";
+ $scope.newUser.c_password = "1";
+ 
+ $scope.addUser = function (userDetails) {
+ if(!$scope.data.cambiarClave){
+   // userDetails.password = null;
+   // userDetails.c_password = null; 
+   var userLocal = {};
+   userLocal.id = userDetails.id;
+   userLocal.nombre = userDetails.nombre;
+   userLocal.apellidos = userDetails.apellidos;
+   userLocal.telefono = userDetails.telefono;
+   userDetails = userLocal;
+   }
+ $http
+.put(usersUrl,userDetails)
+.success(function (data) {
+		
+		$scope.data.exitoCorreccionPerfil = true;
+		    
+})
+.error(function (error) {
+		$scope.data.errorRegistro = true;
+// $window.location.reload();
+});
+};
+});

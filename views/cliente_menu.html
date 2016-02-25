@@ -1,10 +1,10 @@
 <div ng-controller="userCtrl">
-<div class="well" ng-hide="data.noLogin">
-<h3>Hola, {{data.usuarioActual.nombre}} {{data.usuarioActual.apellidos}}</h3>
+<div class="well  col-xs-12" ng-hide="data.noLogin">
+<h4>Bienvenid@, <strong>{{data.usuarioActual.nombre}} {{data.usuarioActual.apellidos}}</strong></h4>
 <div class="list-group">
-  <a href="#perfil" class="list-group-item">Redactar Perfil</a>
-  <a href="#reservasActivas" class="list-group-item">Reservas activas</a>
-  <button  class="list-group-item" ng-click="logOut();">Salir</button>
+  <a href="#perfil" class="btn btn-primary col-xs-10">Mi Perfil</a>
+  <a href="#reservasActivas" class="btn btn-primary col-xs-10">Reservas activas</a>
+  <button   class="btn btn-primary col-xs-10" ng-click="logOut();">Salir</button>
 </div>
 <div >{{data.cargarUsuarioError}}</div>
 <div >{{data.logOutError}}</div>

@@ -6,7 +6,7 @@ form.validate .ng-invalid-required.ng-dirty + span.error { color: red; font-weig
 div.error{ color: red; font-weight: bold; }
 </style>
 
-<div class="well" ng-controller="registroCtrl">
+<div class="well">
 <div class="panel panel-default row" >
         <div class="alert alert-danger" ng-show="data.errorRegistro">
 		<strong>Error</strong> <br>
@@ -18,25 +18,29 @@ div.error{ color: red; font-weight: bold; }
 		 con tus datos de registro. <br>
 		
 		</div>
-        <div class="col-xs-6" ng-hide="data.errorRegistro || data.exitoRegistro">
+		<div class="alert alert-success" ng-show="data.exitoCorreccionPerfil">
+		<strong></strong>Los datos de tu perfíl han sido actualizados con exito.  <br>
+		
+		</div>
+        <div class="col-xs-6" ng-hide="data.errorRegistro || data.exitoRegistro||data.exitoCorreccionPerfil">
 			<form name="registerForm" novalidate ng-submit="addUser(newUser)" class="validate">
 			  <h3>Formulario de registro</h3>
 
-			<h4>Datos de contacto</h4>
+			  <h4>Datos de contacto</h4>
 				<div class="form-group">
 					<label>Nombre (*)</label>
 					
 					<input class="form-control" ng-model="newUser.nombre" name="nombre" required />
-					<span class="error" >
-                          &nbsp;{{getError(registerForm.nombre.$error)}}
+					<span class="error" ng-show="registerForm.nombre.$dirty">
+                          {{getError(registerForm.nombre.$error)}}
                     </span>
 				</div>
 				<div class="form-group">
 					<label>Apellidos (*)</label>
 					
 					<input class="form-control" ng-model="newUser.apellidos" name="apellidos" required />
-					<span class="error" >
-                          &nbsp;{{getError(registerForm.apellidos.$error)}}
+					<span class="error" ng-show="registerForm.apellidos.$dirty">
+                         {{getError(registerForm.apellidos.$error)}}
                     </span>	
 				</div>
 				<div class="form-group">
@@ -44,48 +48,52 @@ div.error{ color: red; font-weight: bold; }
 					
 					<input class="form-control" pattern="\d{9}" placeholder="Es necesario un numero de telefono"
 					ng-model="newUser.telefono" name="telefono" type="text" required />
-					<span class="error">
-                          &nbsp;{{getError(registerForm.telefono.$error)}}
-                    </span>
-					<div class="error" ng-show="(registerForm.telefono.$dirty && registerForm.telefono.$error.pattern)">
-                        <span>No es un teléfono válido!</span>
-            </div>
+					<span class="error" ng-show="registerForm.telefono.$dirty">
+                          {{getError(registerForm.telefono.$error)}}
+				   </span>
+					
 				</div>
-
+				<div ng-show="data.usuarioActual">
+					<div class="checkbox">
+						<label><input type="checkbox" ng-model="data.cambiarClave" />¿Quiere cambiar la contrase&ntilde;a?</label>
+					</div>
+				</div>
+            <div ng-hide="data.usuarioActual && !data.cambiarClave">
 			<h4>Datos de registro</h4>
 				<div class="form-group">
 					<label>Correo electronico (*)</label>
-					
 					<input class="form-control" ng-model="newUser.username" 
-					name="username" type="email" required/>
-					<span class="error" ng-show="registerForm.username.$dirty && registerForm.username.$invalid">
-                          &nbsp;{{getError(registerForm.username.$error)}}
+												name="username" type="email" required/>
+					 <span class="error" ng-show="registerForm.username.$dirty">
+                          {{getError(registerForm.username.$error)}}
+						
                     </span>
 				</div>
-		<div class="form-group">
-			<label>Contrase&ntilde;a (*)</label>
+		        <div class="form-group">
+					<label>Contrase&ntilde;a (*)</label>
 			
-			<input class="form-control" ng-model="newUser.password" type="password" name="password" required/>
-			<span class="error" >
-                          &nbsp;{{getError(registerForm.password.$error)}}
-            </span>
-		</div>
-		<div class="form-group">
-			<label>Repite Contrase&ntilde;a (*)</label>
+					<input class="form-control" ng-model="newUser.password" type="password" name="password" required/>
+					<span class="error" ng-show="registerForm.password.$dirty" >
+                          {{getError(registerForm.password.$error)}}
+					</span>
+				</div>
+				<div class="form-group">
+					<label>Repite Contrase&ntilde;a (*)</label>
 			
-			<input class="form-control" ng-model="newUser.c_password" type="password" name="c_password" required/>
-			<span class="error" >
-                          &nbsp;{{getError(registerForm.c_password.$error)}}
-            </span>
-			<div class="error" ng-show="(registerForm.password.$dirty && registerForm.c_password.$dirty) && (newUser.password != newUser.c_password)">
-                <span>Las contrase&ntilde;as no coinciden!</span>
-            </div>
-		</div>
-		<div class="text-center">
-			<button  type="submit"
-			 class="btn btn-primary" ng-disabled="registerForm.$invalid">Enviar</button>
-		</div>
+					<input class="form-control" ng-model="newUser.c_password" type="password" name="c_password" required/>
+					<span class="error" ng-show="registerForm.c_password.$dirty">
+                          {{getError(registerForm.c_password.$error)}}
+					</span>
+					<div class="error" ng-show="(registerForm.password.$dirty && registerForm.c_password.$dirty) && (newUser.password != newUser.c_password)">
+					<span>Las contrase&ntilde;as no coinciden!</span>
+				</div>
+				</div>
+		    </div>
+		        <div class="text-center">
+				   <button  type="submit"
+						class="btn btn-primary" ng-disabled="registerForm.$invalid">Enviar</button>
+			    </div>
 		</form>
-	</div>
+		</div>
 </div>
 </div>
