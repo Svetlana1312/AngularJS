@@ -7,17 +7,17 @@ div.error { color: red; font-weight: bold; }
 
 <div class="well" ng-controller="recordarCtrl">
 <div class="panel panel-default row" >
-        <div class="alert alert-danger" ng-show="data.errorRecordar">
+        <div class="alert alert-danger" ng-show="control.errorRecordar">
 		    <strong>Error:</strong> <br>
 		    {{mensaje}}<br>
-			<button ng-click="data.errorRecordar=false">Vuelve a intentarlo</button>
+			<button ng-click="navigateTo('/claveOlvidada')">Vuelve a intentarlo</button>
 			
 		</div>
-		<div class="alert alert-success" ng-show="data.exitoRecordar">
+		<div class="alert alert-success" ng-show="control.exitoRecordar">
 		<strong>Felicidades</strong>  Pronto recibirás mensaje en tu correo electrónico con tu nueva contrase&ntilde;a. <br>
 		clave actual: {{data.clave}} <br> 
 		</div>
-        <div  ng-hide="data.errorRecordar || data.exitoRecordar">
+        <div  ng-hide="control.errorRecordar || control.exitoRecordar">
 			<form name="recordarForm" novalidate ng-submit="recordarClave(rec.email)" ng-class="validate">
 			  <h3>Contrase&ntilde;a olvidada</h3>
 
@@ -27,7 +27,7 @@ div.error { color: red; font-weight: bold; }
 				<div class="form-group" >
 					<label>Correo electronico:</label>
 					<input class="form-control"  ng-model="rec.email" name="email" type="email" required />
-					<div class="error" >
+					<div class="error" ng-show="recordarForm.email.$dirty && recordarForm.email.$invalid">
                           {{getError(recordarForm.email.$error)}}
                     </div>
 				</div>

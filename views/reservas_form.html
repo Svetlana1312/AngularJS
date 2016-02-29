@@ -1,4 +1,26 @@
-<div>
+﻿<div class="well" ng-controller="reservaCtrl">
+
 <h3> Aqui puede hacer su reserva</h3>
+<form name="formReservaMesa" novalidate>
+<div class="form-group">
+<label>Hora comienzo</label>
+	<span class=" col-xs-3">
+		<select class="form-control" ng-model="data.reserva.hora" name="hora" required>
+			<option value="12:30" selected >12:30</option>
+			<option value="13:45">13:45</option>
+			<option value="15:00">15:00</option>
+</select>
+</span>
+</div>
+<div ng-show="control.noHayMesa">Lo sentimos, en esta hora no hay ninguna mesa disponible<br>
+Por favor, selecciona otra hora o llama al teléfono de contacto del restaurante.</div>
+<div class="text-center">
+<button  class="btn btn-primary" ng-disabled="control.noHayMesa || formReservaMesa.$invalid" type="submit">Reservar mesa</button>
+</div>
+
+</form>
+
+
+
 
 </div>

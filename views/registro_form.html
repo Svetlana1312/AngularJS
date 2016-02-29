@@ -2,27 +2,27 @@
 form.validate .ng-invalid-required.ng-dirty { background-color: lightpink; }
 form.validate .ng-invalid-email.ng-dirty {
 background-color: lightgoldenrodyellow; }
-form.validate .ng-invalid-required.ng-dirty + span.error { color: red; font-weight: bold; }
+form.validate .ng-invalid.ng-dirty + span.error { color: red; font-weight: bold; }
 div.error{ color: red; font-weight: bold; }
 </style>
 
 <div class="well">
 <div class="panel panel-default row" >
-        <div class="alert alert-danger" ng-show="data.errorRegistro">
+        <div class="alert alert-danger" ng-show="control.errorRegistro">
 		<strong>Error</strong> <br>
 		Se ha producido error en la inserción de los datos<br>
 		<button ng-click="data.errorRegistro=false">Intentalo otra vez</button>
 		</div>
-		<div class="alert alert-success" ng-show="data.exitoRegistro">
+		<div class="alert alert-success" ng-show="control.exitoRegistro">
 		<strong>Bienvenido</strong> al Restaurante Ángel! Pronto recibirás mensaje en tu correo electrónico
 		 con tus datos de registro. <br>
 		
 		</div>
-		<div class="alert alert-success" ng-show="data.exitoCorreccionPerfil">
+		<div class="alert alert-success" ng-show="control.exitoCorreccionPerfil">
 		<strong></strong>Los datos de tu perfíl han sido actualizados con exito.  <br>
 		
 		</div>
-        <div class="col-xs-6" ng-hide="data.errorRegistro || data.exitoRegistro||data.exitoCorreccionPerfil">
+        <div class="col-xs-6" ng-hide="control.errorRegistro || control.exitoRegistro || control.exitoCorreccionPerfil">
 			<form name="registerForm" novalidate ng-submit="addUser(newUser)" class="validate">
 			  <h3>Formulario de registro</h3>
 
@@ -46,7 +46,7 @@ div.error{ color: red; font-weight: bold; }
 				<div class="form-group">
 					<label>Teléfono (*)</label>
 					
-					<input class="form-control" pattern="\d{9}" placeholder="Es necesario un numero de telefono"
+					<input class="form-control" pattern="^\d{9}$" placeholder="Es necesario un numero de telefono"
 					ng-model="newUser.telefono" name="telefono" type="text" required />
 					<span class="error" ng-show="registerForm.telefono.$dirty">
                           {{getError(registerForm.telefono.$error)}}
@@ -55,7 +55,7 @@ div.error{ color: red; font-weight: bold; }
 				</div>
 				<div ng-show="data.usuarioActual">
 					<div class="checkbox">
-						<label><input type="checkbox" ng-model="data.cambiarClave" />¿Quiere cambiar la contrase&ntilde;a?</label>
+						<label><input type="checkbox" ng-model="data.cambiarClave" />¿Cambiar datos de registro?</label>
 					</div>
 				</div>
             <div ng-hide="data.usuarioActual && !data.cambiarClave">

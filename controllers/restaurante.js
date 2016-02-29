@@ -1,4 +1,4 @@
-angular.module("restaurante")
+Ôªøangular.module("restaurante")
 .constant("usersUrl", "http://localhost:5500/usuario")
 .constant("productosUrl", "http://localhost:5500/producto")
 .constant("authUrl", "http://localhost:5500/usuario/login")
@@ -8,10 +8,12 @@ angular.module("restaurante")
     function ($scope,$window, $http, $location,usersUrl,productosUrl,authUrl,userUrl,logOutUrl) {
 // declaramaos la variable data
 $scope.data = {};
+
 // funcion para navegar de forma que nos interesa resetear a veces
 $scope.navigateTo = function (url){
-	if($location.path() ===url) 
-				$route.reload();
+	if($location.path() === url) 
+				$window.location.reload();
+				//$route.path(url);
 		else 
 				$location.path(url);
 }; // final navigateTo
@@ -43,10 +45,10 @@ $scope.getError = function (error) {
 		if (error.required) {
 				return "Por favor, rellena este campo";
 		} else if (error.email) {
-		return "Por favor, indica un correo electrÛnico v·lido";
+		return "Por favor, indica un correo electr√≥nico v√°lido";
 		}
-		else if (error.patern) {
-		return "Por favor, indica un telefono v·lido";
+		else if (error.pattern) {
+		return "Por favor, indica un tel√©fono v√°lido";
 		}
 	}
 };
@@ -114,11 +116,11 @@ $http
 .post(usersUrl,userDetails)
 .success(function (data) {
 		
-		$scope.data.exitoRegistro=true;
+		$scope.control.exitoRegistro=true;
 		    
 })
 .error(function (error) {
-		$scope.data.errorRegistro = error;
+		$scope.control.errorRegistro = error;
 // $window.location.reload();
 });
 
@@ -128,31 +130,35 @@ $http
 
 })
 .controller("recordarCtrl",function($scope,$http,usersUrl){
+$scope.control = {};
  $scope.recordarClave  = function(email){
 	 $http.get(usersUrl+"?username=" + email)
     .success(function(data){
 	if(data[0]){
-		$scope.data.exitoRecordar = true;
-		$scope.data.clave = data[0].password;
-		$scope.data.nombre = data[0].nombre;
+		$scope.control.exitoRecordar = true;
+		
 		
 	}else{
-	$scope.data.errorRecordar = true;
+	$scope.control.errorRecordar = true;
 	$scope.mensaje  = "No existe un usuario registrado con este email!";
-	//$scope.data.email = email;
+	
 	}
 	
 	})
 	.error(function(error){
-	$scope.data.errorRecordar = true;
+	$scope.control.errorRecordar = true;
 	$scope.mensaje  = "No ha sido posible enviar el email!";
 
 	});
- };
+ };// final de recordarClave
 
 //$scope.enviarEmail();
 })
 .controller("correccionPerfilCtrl", function($scope,$http,usersUrl){
+// inicializar datos de control
+ $scope.control = {};
+ $scope.data.cambiarClave = false;
+ // cargar los datos del usuario logeado al formulario
  $scope.newUser = $scope.data.usuarioActual;
  $scope.newUser.password = "1";
  $scope.newUser.c_password = "1";
@@ -172,12 +178,24 @@ $http
 .put(usersUrl,userDetails)
 .success(function (data) {
 		
-		$scope.data.exitoCorreccionPerfil = true;
+		$scope.control.exitoCorreccionPerfil = true;
 		    
 })
 .error(function (error) {
-		$scope.data.errorRegistro = true;
+		$scope.control.errorRegistro = true;
 // $window.location.reload();
 });
 };
+}) // final de correccionPerfilCtrl
+.controller("reservaCtrl",function($scope,$http){
+$scope.control={};
+$scope.control.noHayMesa = false;
+$http.get()
+.success(function(){
+
+})
+.error(function(){
+
+});
+
 });
