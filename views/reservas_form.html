@@ -6,7 +6,7 @@
 <label>Hora comienzo</label>
 	<span class=" col-xs-3">
 		<select class="form-control" ng-model="data.reserva.hora" name="hora" required>
-			<option value="12:30" selected >12:30</option>
+			<option value="12:30" selected="selected" >12:30</option>
 			<option value="13:45">13:45</option>
 			<option value="15:00">15:00</option>
 </select>
@@ -19,8 +19,12 @@ Por favor, selecciona otra hora o llama al teléfono de contacto del restaurante
 </div>
 
 </form>
-
-
-
-
+<div>Error de mesas : {{control.errorMesas}}</div>
+<div>Error de reservas : {{control.errorReservas}}</div>
+<div>Mesas : {{data.mesas}}</div>
+<div>Reservas : {{data.reservas}}</div>
+<div>Fecha : {{data.reserva.fecha|date: "yyyy-MM-dd"}}</div>
+<div>Fecha_filtrada : {{fecha_filtrada}}</div>
+<div>Comensales : {{data.reserva.comensales}}</div>
+<div>Hora : {{data.reserva.hora}}</div>
 </div>

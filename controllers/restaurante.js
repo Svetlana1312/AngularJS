@@ -4,11 +4,14 @@
 .constant("authUrl", "http://localhost:5500/usuario/login")
 .constant("userUrl", "http://localhost:5500/usuario/me")
 .constant("logOutUrl", "http://localhost:5500/usuario/logout")
+.constant("mesasUrl", "http://localhost:5500/mesa")
+.constant("reservasUrl", "http://localhost:5500/reserva")
 .controller("restauranteCtrl", 
     function ($scope,$window, $http, $location,usersUrl,productosUrl,authUrl,userUrl,logOutUrl) {
 // declaramaos la variable data
-$scope.data = {};
-
+$scope.data = {reserva :{fecha: new Date()}};
+		//var Date fecha ;
+		//$scope.data.reserva.fecha = fecha;
 // funcion para navegar de forma que nos interesa resetear a veces
 $scope.navigateTo = function (url){
 	if($location.path() === url) 
@@ -55,9 +58,6 @@ $scope.getError = function (error) {
 
 })//final del controler principal
 .controller("loginCtrl",function($scope, $http, $location,usersUrl,authUrl,userUrl,logOutUrl){
-
-
-
 //autenticacion de usuarios
 $scope.authenticate = function (user, pass) {
 $http.post(authUrl, {
@@ -71,23 +71,16 @@ $scope.mensajeLog  = "Exito de login";
 $scope.data.noLogin=false;
 $scope.cargarUsuario();
 $scope.navigateTo("/home");
-
 })
 .error(function (error) {
 $scope.data.authenticationError = error;
 $("#userNameLogin").focus().select();
-
 });
 };// final de authenticate
-
-
-
 })
 .controller("userCtrl",function($scope, $http,logOutUrl,$window){
-
 // funcion de cerrar sesion
 $scope.logOut=function(){
-
 $http.post(logOutUrl, {
 withCredentials: true
 })
@@ -99,9 +92,7 @@ withCredentials: true
 .error(function(error){
 $scope.data.logOutError = "Error del logout";
 });
-
 }; // final de logOut
-
 })
 .controller("registroCtrl", function($scope,$http,usersUrl){
 // añadir el nuevo usuario a la base de datos
@@ -109,15 +100,13 @@ $scope.data.logOutError = "Error del logout";
 		 /*    $scope.data.exitoCorreccionPerfil = false;
 		     $scope.data.exitoRegistro=false;
 			 $scope.data.errorRegistro = false;*/
-         				 
+$scope.control={};        				 
 $scope.addUser = function (userDetails) {
 //if(userDetails.password == userDetails.c_password){
 $http
 .post(usersUrl,userDetails)
 .success(function (data) {
-		
 		$scope.control.exitoRegistro=true;
-		    
 })
 .error(function (error) {
 		$scope.control.errorRegistro = error;
@@ -162,8 +151,7 @@ $scope.control = {};
  $scope.newUser = $scope.data.usuarioActual;
  $scope.newUser.password = "1";
  $scope.newUser.c_password = "1";
- 
- $scope.addUser = function (userDetails) {
+  $scope.addUser = function (userDetails) {
  if(!$scope.data.cambiarClave){
    // userDetails.password = null;
    // userDetails.c_password = null; 
@@ -187,15 +175,23 @@ $scope.control = {};
 });
 };
 }) // final de correccionPerfilCtrl
-.controller("reservaCtrl",function($scope,$http){
+.controller("reservaCtrl",function($scope,$filter,$http,mesasUrl,reservasUrl){
 $scope.control={};
 $scope.control.noHayMesa = false;
-$http.get()
-.success(function(){
-
+$http.get(mesasUrl)
+.success(function(data){
+$scope.data.mesas = data;
 })
-.error(function(){
-
+.error(function(error){
+ $scope.control.errorMesas = true;
 });
-
+var fecha = $scope.data.reserva.fecha;
+$scope.fecha_filtrada = $filter('date')(fecha,"yyyy-MM-dd");
+$http.get(reservasUrl + "?" + {"fecha" : $scope.fecha_filtrada,"hora": "12:30"})
+.success(function(data){
+$scope.data.reservas = data;
+})
+.error(function(error){
+ $scope.control.errorReservas = true;
+});
 });
