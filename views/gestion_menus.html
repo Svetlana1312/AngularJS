@@ -1,0 +1,95 @@
+﻿
+<div  ng-controller="menusCtrl">
+<h3> Gestion de menus</h3>
+<div class="well">
+	<form name="formFecha" novalidate ng-submit="hayMenu(fecha_menu)">
+	<div class="row">
+	 	<div class="form-group col-xs-4">
+				<label for="fecha_menu">Fecha de interés:</label>
+				<input type="date" id="fecha_menu" name="fecha_menu" ng-model="fecha_menu" 
+				 required="required" class="form-control"/>
+		</div>
+		<div class="form-group col-xs-4">
+				<label for="precio_menu">Precio del menú:</label>
+				<input type="text" id="precio_menu" name="precio_menu" ng-model="precio_menu" 
+				 required="required" class="form-control"/>
+		</div>
+	</div>
+    <div class="row">
+		<div class="col-xs-4 text-center">		
+  				<button  class="btn btn-primary" type="submit" ng-disabled="formFecha.$invalid">Buscar</button>	
+        </div>
+	</div>
+	</form>	
+	
+	<div class="row">
+		<div ng-show="hayMenus" class="col-xs-4">
+			Ya hay un menu para esta fecha!<br>
+		  
+		</div>
+		<div class="col-xs-8"></div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			{{mensaje}}
+		</div>
+	</div>
+
+</div>
+<div ng-show="nuevoMenu" class="well">
+<h3>Eliga los platos para incluir en el menu</h3>
+<div class="row">
+	<div class="form-group col-xs-4 text-right">
+		<label for="primerPlato">Primeros:<label>
+		<select name="primerPlato" ng-model="elegidoPrimero" ng-options="item as item.nombre for item in primeros"
+				class="form-control" id="primerPlato" required="required">
+		</select>
+	<button ng-click="agregarPrimero(elegidoPrimero)" ng-disabled="agregadosPrimeros.length==5">+</button>
+	</div>
+	<div class="form-group col-xs-4 text-right">
+		<label for="segundoPlato">Segundos:<label>
+		<select name="segundoPlato" ng-model="elegidoSegundo" ng-options="item as item.nombre for item in segundos"
+			class="form-control" id="segundoPlato">
+		</select>
+		<button ng-click="agregarSegundo(elegidoSegundo)" ng-disabled="agregadosSegundos.length==5">+</button>
+	</div>
+	<div class="form-group col-xs-4 text-right">
+		<label for="tercerPlato">Postres:<label>
+		<select name="tercerPlato" ng-model="elegidoPostre" ng-options="item as item.nombre for item in postres"
+			class="form-control" id="tercerPlato">
+		</select>
+		<button ng-click="agregarPostre(elegidoPostre)" ng-disabled="agregadosPostres.length==5">+</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-4">
+		<ol>
+			<li ng-repeat="x in agregadosPrimeros track by $index">
+					{{ x.nombre}}
+			</li>
+		</ol>
+	</div>
+	<div class="col-xs-4">
+		<ol>
+			<li ng-repeat="x in agregadosSegundos track by $index">
+					{{ x.nombre }}
+			</li>
+		</ol>
+	</div>
+	<div class="col-xs-4">
+		<ol>
+			<li ng-repeat="x in agregadosPostres track by $index">
+				{{ x.nombre }}
+			</li>
+		</ol>
+	</div>
+</div>
+<div class="row text-center">
+<div class="col-xs-12">
+<button class="btn btn-primary" ng-click="grabarMenu()" ng-disabled="agregadosPrimeros.length!=5 ||
+agregadosSegundos.length!=5 || agregadosPostres.length!=5">Grabar</button>
+</div>
+
+</div>
+</div> 

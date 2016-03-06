@@ -41,6 +41,9 @@ controller: "correccionPerfilCtrl"
 $routeProvider.when("/busqueda", {
 templateUrl: "/views/reservas_form.html"
 });
+$routeProvider.when("/gestionMenus", {
+templateUrl: "/views/gestion_menus.html"
+});
 $routeProvider.otherwise({
 templateUrl: "/views/home.html"
 });
@@ -65,19 +68,20 @@ templateUrl: "/views/home.html"
 				<li><a href="#uso">Condiciones de uso</a></li>
 				<li><a href="#contacto">Contacto</a></li>
 			</ul>
-	    </div>
+	</div>
     <div class="panel panel-default row" >
         <div class="col-xs-3">
           <ng-include  src="'views/busqueda_form.html'"></ng-include>
 		  <ng-include  src="'views/login_form.html'"></ng-include>
 		  <ng-include  src="'views/cliente_menu.html'"></ng-include>
+		  <ng-include  src="'views/admin_menu.html'"></ng-include>
         </div>
         <div class="col-xs-9">
 		
-		<div>
-            <ng-view></ng-view>
+			<div>
+				<ng-view></ng-view>
+			</div>
 		</div>
-    </div>
-</div>		
+	</div>		
 </body>
 </html>

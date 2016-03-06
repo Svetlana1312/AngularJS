@@ -6,6 +6,9 @@
 .constant("logOutUrl", "http://localhost:5500/usuario/logout")
 .constant("mesasUrl", "http://localhost:5500/mesa")
 .constant("reservasUrl", "http://localhost:5500/reserva")
+.constant("menusUrl","http://localhost:5500/menu")
+.constant("platosUrl","http://localhost:5500/plato")
+.constant("platosMenuUrl","http://localhost:5500/platosmenu")
 .controller("restauranteCtrl", 
     function ($scope,$window, $http, $location,usersUrl,productosUrl,authUrl,userUrl,logOutUrl) {
 // declaramaos la variable data
@@ -187,11 +190,109 @@ $scope.data.mesas = data;
 });
 var fecha = $scope.data.reserva.fecha;
 $scope.fecha_filtrada = $filter('date')(fecha,"yyyy-MM-dd");
-$http.get(reservasUrl + "?" + {"fecha" : $scope.fecha_filtrada,"hora": "12:30"})
+$http.get(reservasUrl + "?fecha="+ $scope.fecha_filtrada + "&hora=12:30")
 .success(function(data){
 $scope.data.reservas = data;
 })
 .error(function(error){
  $scope.control.errorReservas = true;
 });
+})
+.controller("menusCtrl",function($scope,$http,$filter,menusUrl,platosUrl,platosMenuUrl){
+$scope.control = {};
+$scope.precio_menu = 9;
+$scope.mensaje="";
+$scope.hayMenus =false;
+$scope.cargarPlatos = function(){
+$http.get(platosUrl + "?tipo=primero").success(function(data){
+$scope.primeros = data;
+}).error(function(error){
+$scope.mensaje = "Los primeros no se han podido cargar!";
+});
+$http.get(platosUrl + "?tipo=segundo").success(function(data){
+$scope.segundos = data;
+}).error(function(error){
+$scope.mensaje = "Los segundos no se han podido cargar!";
+});
+$http.get(platosUrl + "?tipo=postre").success(function(data){
+$scope.postres = data;
+}).error(function(error){
+$scope.mensaje = "Los postres no se han podido cargar!";
+});
+};
+
+$scope.cargarPlatos();
+
+$scope.hayMenu = function(fecha){
+$scope.fecha_corta = $filter('date')(fecha,"yyyy-MM-dd");
+$http.get(menusUrl +  "?fecha=" + $scope.fecha_corta)
+.success(function(data){
+if(data.length > 0){
+$scope.hayMenus = true;
+
+}else{
+$scope.nuevoMenu = true;
+}
+
+
+})
+.error(function(error){
+$scope.mensaje="Error en la consulta de menu por fecha";
+});
+};
+
+$scope.agregadosPrimeros = [];
+$scope.agregadosSegundos = [];
+$scope.agregadosPostres = [];
+$scope.agregarPrimero = function(plato){
+$scope.agregadosPrimeros.push(plato);
+};
+$scope.agregarSegundo = function(plato){
+$scope.agregadosSegundos.push(plato);
+};
+$scope.agregarPostre = function(plato){
+$scope.agregadosPostres.push(plato);
+};
+$scope.grabarMenu = function(){
+$http.post(menusUrl,{"fecha":$scope.fecha_corta, "precio":$scope.precio_menu})
+.success(function(data){
+$scope.idMenu = data.id;
+$scope.mensaje = "el id del menu es : " + $scope.idMenu + "<br>";
+})
+.error(function(error){
+$scope.mensaje = "Error al grabar el menu.";
+});
+var j;
+//for(j=0;j<5;j++){
+    var idPrimero=$scope.agregadosPrimeros[0].id;
+	//var idSegundo=$scope.agregadosSegundos[j].id;
+   // var idPostre=$scope.agregadosPostres[j].id;
+
+    $http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idPrimero})
+	.success(function(data){
+	  
+	})
+	.error(function(error){
+    $scope.mensaje += error ;
+	errorAlGuardar = true;
+	});
+	/*$http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idSegundo})
+	.success(function(data){
+	  
+	})
+	.error(function(error){
+	//$scope.mensaje += j + " " ;
+	errorAlGuardar = true;
+	});
+	$http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idPostre})
+	.success(function(data){
+	  
+	})
+	.error(function(error){
+	//$scope.mensaje += j  + " " ;
+	errorAlGuardar = true;
+	});*/
+
+//}
+};
 });

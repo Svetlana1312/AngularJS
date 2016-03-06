@@ -1,8 +1,8 @@
 <div ng-controller="userCtrl">
-<div class="well  col-xs-12" ng-hide="data.noLogin || data.usuarioActual.username == 'admin'">
+<div class="well  col-xs-12" ng-hide="data.noLogin || data.usuarioActual.username != 'admin'">
 <h4>Bienvenid@, <strong>{{data.usuarioActual.nombre}} {{data.usuarioActual.apellidos}}</strong></h4>
 <div class="list-group">
-  <button ng-click="navigateTo('perfil')" class="btn btn-primary btn-block">Mi Perfil</button>
+  <a href="#gestionMenus" class="btn btn-primary btn-block">Gestion menus</a>
   <a href="#reservasActivas" class="btn btn-primary btn-block">Reservas activas</a>
   <button   class="btn btn-primary btn-block" ng-click="logOut();">Salir</button>
 </div>
