@@ -1,7 +1,7 @@
 ﻿
 <div  ng-controller="menusCtrl">
 <h3> Gestion de menus</h3>
-<div class="well">
+<div class="well" ng-hide="nuevoMenu || exitoMenu">
 	<form name="formFecha" novalidate ng-submit="hayMenu(fecha_menu)">
 	<div class="row">
 	 	<div class="form-group col-xs-4">
@@ -24,7 +24,23 @@
 	
 	<div class="row">
 		<div ng-show="hayMenus" class="col-xs-4">
-			Ya hay un menu para esta fecha!<br>
+			
+<h2>Menu del dia {{fecha_corta}} con precio {{precio_menu}}</h2>
+
+<h3>Primeros platos</h3>
+<ul>
+<li ng-repeat="x in agregadosPrimeros">{{x.nombre}}</li>
+</ul>
+<h3>Segundos platos</h3>
+<ul>
+<li ng-repeat="x in agregadosSegundos">{{x.nombre}}</li>
+</ul>
+<h3>Postres</h3>
+<ul>
+<li ng-repeat="x in agregadosPostres">{{x.nombre}}</li>
+</ul>
+
+<button class="btn btn-prima
 		  
 		</div>
 		<div class="col-xs-8"></div>
@@ -37,7 +53,7 @@
 
 </div>
 <div ng-show="nuevoMenu" class="well">
-<h3>Eliga los platos para incluir en el menu</h3>
+<h3>Elija los platos para incluir en el menu</h3>
 <div class="row">
 	<div class="form-group col-xs-4 text-right">
 		<label for="primerPlato">Primeros:<label>
@@ -93,3 +109,22 @@ agregadosSegundos.length!=5 || agregadosPostres.length!=5">Grabar</button>
 
 </div>
 </div> 
+<div ng-show="exitoMenu" class="well">
+<h2>Menu del dia {{fecha_corta}} con precio {{precio_menu}}</h2>
+
+<h3>Primeros platos</h3>
+<ul>
+<li ng-repeat="x in agregadosPrimeros">{{x.nombre}}</li>
+</ul>
+<h3>Segundos platos</h3>
+<ul>
+<li ng-repeat="x in agregadosSegundos">{{x.nombre}}</li>
+</ul>
+<h3>Postres</h3>
+<ul>
+<li ng-repeat="x in agregadosPostres">{{x.nombre}}</li>
+</ul>
+
+<button class="btn btn-primary" ng-click="salirMenu()">Salir</button>
+
+</div>

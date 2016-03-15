@@ -221,15 +221,42 @@ $scope.mensaje = "Los postres no se han podido cargar!";
 });
 };
 
-$scope.cargarPlatos();
+
 
 $scope.hayMenu = function(fecha){
+// cargamos los platos en los combos
+
+// formateamos la fecha con el formato en la base de datos
 $scope.fecha_corta = $filter('date')(fecha,"yyyy-MM-dd");
 $http.get(menusUrl +  "?fecha=" + $scope.fecha_corta)
 .success(function(data){
 if(data.length > 0){
-$scope.hayMenus = true;
-
+$scope.mensaje = "El id del menu es " + data[0].id;
+// pedimos los id de los platos que estan en este menu
+$http.get(platosMenuUrl + "?idMenu=" + data[0].id)
+.success(function(data){
+	
+	for(i=0;i<15;i++)
+	{
+		$http.get(platosUrl + "?id="+data[i].idPlato)
+		.success(function(data){
+			switch(data.tipo){
+				case 'primero':
+					$scope.agregarPrimero(data);
+				break;
+				case 'segundo':
+					$scope.agregarSegundo(data);
+				break;
+				case 'postre':
+					$scope.agregarPostre(data);
+				break;
+			}
+			
+		});
+	}
+	$scope.hayMenus = true;
+	$scope.cargarPlatos();
+});
 }else{
 $scope.nuevoMenu = true;
 }
@@ -253,20 +280,18 @@ $scope.agregadosSegundos.push(plato);
 $scope.agregarPostre = function(plato){
 $scope.agregadosPostres.push(plato);
 };
+// funciona que graba el menu en memoria
 $scope.grabarMenu = function(){
+var errorAlGuardar = false;
 $http.post(menusUrl,{"fecha":$scope.fecha_corta, "precio":$scope.precio_menu})
 .success(function(data){
 $scope.idMenu = data.id;
-$scope.mensaje = "el id del menu es : " + $scope.idMenu + "<br>";
-})
-.error(function(error){
-$scope.mensaje = "Error al grabar el menu.";
-});
+//$scope.mensaje = "el id del menu es : " + $scope.idMenu + "<br>";
 var j;
-//for(j=0;j<5;j++){
-    var idPrimero=$scope.agregadosPrimeros[0].id;
-	//var idSegundo=$scope.agregadosSegundos[j].id;
-   // var idPostre=$scope.agregadosPostres[j].id;
+for(j=0;j<5;j++){
+    var idPrimero=$scope.agregadosPrimeros[j].id;
+	var idSegundo=$scope.agregadosSegundos[j].id;
+    var idPostre=$scope.agregadosPostres[j].id;
 
     $http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idPrimero})
 	.success(function(data){
@@ -276,7 +301,7 @@ var j;
     $scope.mensaje += error ;
 	errorAlGuardar = true;
 	});
-	/*$http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idSegundo})
+	$http.post(platosMenuUrl,{"idMenu":$scope.idMenu,"idPlato":idSegundo})
 	.success(function(data){
 	  
 	})
@@ -291,8 +316,24 @@ var j;
 	.error(function(error){
 	//$scope.mensaje += j  + " " ;
 	errorAlGuardar = true;
-	});*/
+	});
+	
+}
+if(!errorAlGuardar){
+	
+	$scope.nuevoMenu = false;
+	$scope.exitoMenu = true;
+}
+})
+.error(function(error){
+$scope.mensaje = "Error al grabar el menu.";
+});
 
-//}
+};
+$scope.salirMenu = function(){
+	$scope.nuevoMenu = false;
+	$scope.exitoMenu = false;
+	$scope.mensaje="Se ha dado de alta correctamente el menu!";
+	
 };
 });
